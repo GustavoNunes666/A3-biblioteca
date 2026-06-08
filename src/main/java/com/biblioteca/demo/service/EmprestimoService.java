@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class EmprestimoService {
+public class EmprestimoService implements IEmprestimoService {
 
     private final EmprestimoRepository emprestimoRepository;
     private final LivroService livroService;
@@ -33,6 +33,7 @@ public class EmprestimoService {
         this.prazoStrategy = prazoStrategy;
     }
 
+    @Override
     public Emprestimo realizarEmprestimo(Long livroId, Long usuarioId) {
         Livro livro = livroService.buscarPorId(livroId);
         Usuario usuario = usuarioService.buscarPorId(usuarioId);
@@ -53,6 +54,7 @@ public class EmprestimoService {
         return emprestimoRepository.save(emprestimo);
     }
 
+    @Override
     public Emprestimo realizarDevolucao(Long emprestimoId) {
         Emprestimo emprestimo = emprestimoRepository.findById(emprestimoId)
                 .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado"));
@@ -64,10 +66,12 @@ public class EmprestimoService {
         return emprestimoRepository.save(emprestimo);
     }
 
+    @Override
     public List<Emprestimo> listarAbertos() {
         return emprestimoRepository.findByDevolvido(false);
     }
 
+    @Override
     public List<Emprestimo> listarPorUsuario(Long usuarioId) {
         return emprestimoRepository.findByUsuarioId(usuarioId);
     }

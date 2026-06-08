@@ -14,6 +14,41 @@ public class Livro {
     private String isbn;
     private boolean disponivel = true;
 
+    public Livro() {}
+
+    private Livro(Builder builder) {
+        this.titulo = builder.titulo;
+        this.autor = builder.autor;
+        this.isbn = builder.isbn;
+        this.disponivel = true;
+    }
+
+    // Builder (padrão criacional)
+    public static class Builder {
+        private String titulo;
+        private String autor;
+        private String isbn;
+
+        public Builder titulo(String titulo) {
+            this.titulo = titulo;
+            return this;
+        }
+
+        public Builder autor(String autor) {
+            this.autor = autor;
+            return this;
+        }
+
+        public Builder isbn(String isbn) {
+            this.isbn = isbn;
+            return this;
+        }
+
+        public Livro build() {
+            return new Livro(this);
+        }
+    }
+
     // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

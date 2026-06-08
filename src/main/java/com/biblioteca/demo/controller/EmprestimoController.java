@@ -1,5 +1,6 @@
 package com.biblioteca.demo.controller;
 
+import com.biblioteca.demo.decorator.EmprestimoServiceDecorator;
 import com.biblioteca.demo.model.Emprestimo;
 import com.biblioteca.demo.service.EmprestimoService;
 import org.springframework.http.ResponseEntity;
@@ -11,26 +12,29 @@ import java.util.List;
 @RequestMapping("/emprestimos")
 public class EmprestimoController {
 
+    private final EmprestimoServiceDecorator emprestimoDecorator;
     private final EmprestimoService emprestimoService;
 
-    public EmprestimoController(EmprestimoService emprestimoService) {
+    public EmprestimoController(EmprestimoServiceDecorator emprestimoDecorator,
+                                 EmprestimoService emprestimoService) {
+        this.emprestimoDecorator = emprestimoDecorator;
         this.emprestimoService = emprestimoService;
     }
 
     @PostMapping
     public ResponseEntity<Emprestimo> realizarEmprestimo(@RequestParam Long livroId,
                                                           @RequestParam Long usuarioId) {
-        return ResponseEntity.ok(emprestimoService.realizarEmprestimo(livroId, usuarioId));
+        return ResponseEntity.ok(emprestimoDecorator.realizarEmprestimo(livroId, usuarioId));
     }
 
     @PutMapping("/{id}/devolver")
     public ResponseEntity<Emprestimo> devolver(@PathVariable Long id) {
-        return ResponseEntity.ok(emprestimoService.realizarDevolucao(id));
+        return ResponseEntity.ok(emprestimoDecorator.realizarDevolucao(id));
     }
 
     @GetMapping("/abertos")
     public ResponseEntity<List<Emprestimo>> listarAbertos() {
-        return ResponseEntity.ok(emprestimoService.listarAbertos());
+        return ResponseEntity.ok(emprestimoDecorator.listarAbertos());
     }
 
     @GetMapping("/usuario/{id}")

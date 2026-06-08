@@ -24,23 +24,26 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        // Cadastrar livros
-        Livro l1 = new Livro();
-        l1.setTitulo("Dom Casmurro");
-        l1.setAutor("Machado de Assis");
-        l1.setIsbn("978-8525406958");
+        // Usando o padrão Builder para criar livros
+        Livro l1 = new Livro.Builder()
+                .titulo("Dom Casmurro")
+                .autor("Machado de Assis")
+                .isbn("978-8525406958")
+                .build();
         livroService.salvar(l1);
 
-        Livro l2 = new Livro();
-        l2.setTitulo("O Cortiço");
-        l2.setAutor("Aluísio Azevedo");
-        l2.setIsbn("978-8572328876");
+        Livro l2 = new Livro.Builder()
+                .titulo("O Cortiço")
+                .autor("Aluísio Azevedo")
+                .isbn("978-8572328876")
+                .build();
         livroService.salvar(l2);
 
-        Livro l3 = new Livro();
-        l3.setTitulo("A Hora da Estrela");
-        l3.setAutor("Clarice Lispector");
-        l3.setIsbn("978-8520927302");
+        Livro l3 = new Livro.Builder()
+                .titulo("A Hora da Estrela")
+                .autor("Clarice Lispector")
+                .isbn("978-8520927302")
+                .build();
         livroService.salvar(l3);
 
         // Cadastrar usuários

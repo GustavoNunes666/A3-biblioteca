@@ -9,6 +9,7 @@ import com.biblioteca.demo.repository.UsuarioRepository;
 import com.biblioteca.demo.service.EmprestimoService;
 import com.biblioteca.demo.service.LivroService;
 import com.biblioteca.demo.service.UsuarioService;
+import com.biblioteca.demo.strategy.PrazoNormal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -39,7 +40,8 @@ class DemoApplicationTests {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        emprestimoService = new EmprestimoService(emprestimoRepository, livroService, usuarioService);
+        PrazoNormal prazoNormal = new PrazoNormal();
+        emprestimoService = new EmprestimoService(emprestimoRepository, livroService, usuarioService, prazoNormal);
     }
 
     @Test

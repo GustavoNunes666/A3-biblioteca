@@ -4,6 +4,8 @@ import com.biblioteca.demo.model.Emprestimo;
 import com.biblioteca.demo.model.Livro;
 import com.biblioteca.demo.model.Usuario;
 import com.biblioteca.demo.repository.EmprestimoRepository;
+import com.biblioteca.demo.strategy.PrazoDevolucaoStrategy;
+import com.biblioteca.demo.strategy.PrazoNormal;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,13 +17,20 @@ public class EmprestimoService {
     private final EmprestimoRepository emprestimoRepository;
     private final LivroService livroService;
     private final UsuarioService usuarioService;
+    private PrazoDevolucaoStrategy prazoStrategy;
 
     public EmprestimoService(EmprestimoRepository emprestimoRepository,
                               LivroService livroService,
-                              UsuarioService usuarioService) {
+                              UsuarioService usuarioService,
+                              PrazoNormal prazoNormal) {
         this.emprestimoRepository = emprestimoRepository;
         this.livroService = livroService;
         this.usuarioService = usuarioService;
+        this.prazoStrategy = prazoNormal;
+    }
+
+    public void setPrazoStrategy(PrazoDevolucaoStrategy prazoStrategy) {
+        this.prazoStrategy = prazoStrategy;
     }
 
     public Emprestimo realizarEmprestimo(Long livroId, Long usuarioId) {
@@ -39,7 +48,7 @@ public class EmprestimoService {
         emprestimo.setLivro(livro);
         emprestimo.setUsuario(usuario);
         emprestimo.setDataEmprestimo(LocalDate.now());
-        emprestimo.setDataDevolucao(LocalDate.now().plusDays(7));
+        emprestimo.setDataDevolucao(LocalDate.now().plusDays(prazoStrategy.getPrazoEmDias()));
 
         return emprestimoRepository.save(emprestimo);
     }
